@@ -29,6 +29,11 @@ async def play(ctx, url):
         if voice_client is None:
             await voice_channel.connect()
             voice_client = ctx.voice_client
+
+        # Remove the old audio file if it exists
+        if os.path.exists("audio.mp3"):
+            os.remove("audio.mp3")
+
         command = f'yt-dlp "{url}" -x --audio-format mp3 -o "audio.mp3"'
         process = await asyncio.create_subprocess_shell(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, stderr = await process.communicate()
